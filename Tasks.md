@@ -90,7 +90,7 @@ fun main(args: Array<String>) {
     
     pm.multiplier = 2
     pm.amountOfProblemsBefore = 10
-  	assert(pm.amountOfProblemsNow == 20)
+    assert(pm.amountOfProblemsNow == 20)
     
     println("You are the best!")
 }
@@ -127,7 +127,7 @@ fun main(args: Array<String>) {
     assert(spicesNotFiltered[2].heat == 5)
     assert(spicesNotFiltered[6].heat == 10)
     
-  	assert(spices.all {it.heat > 5} )
+    assert(spices.all {it.heat > 5} )
     
     println("You are the best!")
 }
@@ -159,7 +159,7 @@ fun main(args: Array<String>) {
     */
     
     assert(filteredNumbers == listOf(5, 7))
-	assert(squaredNumbers == listOf(25, 16, 49))
+    assert(squaredNumbers == listOf(25, 16, 49))
     
     println("You are the best!")
 }
