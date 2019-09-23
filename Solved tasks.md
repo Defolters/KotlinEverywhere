@@ -1,8 +1,8 @@
 # Functions
 ```
-/* 
-напишите простую функцию
-*/
+// 
+fun getHelloWorld() = "Hello World!"
+//
 fun main() {
     assert(getHelloWorld() == "Hello World!")
     println("You are the best!")
@@ -10,9 +10,9 @@ fun main() {
 ```
 # Extensions
 ```
-/*
-напишите расширение к строке
-*/
+// TODO
+fun String.reverseAndToCapital(): String = this.reversed().toUpperCase()
+//
 
 fun main() {
     
@@ -25,9 +25,24 @@ fun main() {
 
 # Function + Extension
 ```
-/*
-напишите расширение к Int, которое будет возвращать необходимую строку
-*/
+//
+fun Int.getAgeEndings(): String {
+    var ageEnding = "Лет"
+    
+    if (this in 10..15) {
+        return ageEnding
+    }
+    
+    val yearLastDigit = this % 10
+    
+    if (yearLastDigit == 1) {
+        ageEnding = "Год"
+    } else if (yearLastDigit == 2 || yearLastDigit == 3 || yearLastDigit == 4) {
+        ageEnding = "Года"
+    }
+    return ageEnding
+}
+//
 fun main(args: Array<String>) {
     
     assert(1.getAgeEndings() == "Год")
@@ -42,9 +57,9 @@ fun main(args: Array<String>) {
 ```
 # Lambda
 ```
-/*
-напишите функцию, которая использует функцию any и принимает лямбду
-*/
+//
+fun containsFortyTwo(collection: Collection<Int>): Boolean = collection.any { it == 42 }
+//
 
 fun main() {
     
@@ -62,7 +77,10 @@ fun main() {
 import java.util.Collections
 
 fun getSortedList(list:List<String>): List<String> {
-	Collections.sort(list, object { создайте анонимный объект })
+    Collections.sort(list, object : Comparator<String> {
+    	override fun compare(x: String, y: String) =  x.first() - y.first()
+	})
+    
     return list
 }
 
@@ -77,9 +95,14 @@ fun main(args: Array<String>) {
 ```
 # Getters in class
 ```
-/*
-создайте класс, который содержит три поля. Два из них можно менять, а третье равняется произведению первых двух. Используйте Getters.
-*/
+//
+class ProblemsMultiplier(){
+    var amountOfProblemsBefore: Int = 0
+    var multiplier: Int = 0
+    val amountOfProblemsNow: Int
+        get() {return amountOfProblemsBefore * multiplier }
+}
+//
 fun main(args: Array<String>) {
     
     val pm = ProblemsMultiplier()
@@ -90,23 +113,37 @@ fun main(args: Array<String>) {
     
     pm.multiplier = 2
     pm.amountOfProblemsBefore = 10
-    assert(pm.amountOfProblemsNow == 20)
+  	assert(pm.amountOfProblemsNow == 20)
     
     println("You are the best!")
 }
 ```
 # Constructors
 ```
+//
+class Spice(val name: String, val spiciness: String = "mild") {
+
+    val heat: Int
+        get() {
+            return when (spiciness) {
+                "mild" -> 1
+                "medium" -> 3
+                "spicy" -> 5
+                "very spicy" -> 7
+                "extremely spicy" -> 10
+                else -> 0
+            }
+        }
+}
+//
+
 /*
-создайте класс Spice, который в конструкторе принимает два значения name и spiciness, а также содержит поле heat, которое зависит от spiciness следующим способом. 
  "mild" = 1
  "medium" = 3
  "spicy" = 5
  "very spicy" = 7
  "extremely spicy" = 10
-Используйте Getters
 */
-
 fun main(args: Array<String>) {
     
     val spicesNotFiltered = listOf(
@@ -119,24 +156,37 @@ fun main(args: Array<String>) {
         Spice("hot pepper", "extremely spicy")
     )
     
-    /*
+    //
     val spices = spicesNotFiltered.filter { it.heat > 5}
-    */
+    //
     
     assert(spicesNotFiltered[0].heat == 1)
     assert(spicesNotFiltered[2].heat == 5)
     assert(spicesNotFiltered[6].heat == 10)
     
-    assert(spices.all {it.heat > 5} )
+  	assert(spices.all {it.heat > 5} )
     
     println("You are the best!")
 }
 ```
 # Inheritance 
 ```
-/*
-создайте класс Parent c методом getHobby, затем дочерний класс Children, где переопределите метод
-*/
+//
+open class Parent(val name: String, val surname: String) {
+
+    open fun getHobby(): String {
+        return "Lying"
+    }
+}
+
+
+class Children(val title: String, val author: String, val bestGame: String) : Parent(title, author) {
+
+    override fun getHobby(): String {
+        return "Playing $bestGame"
+    }
+}
+//
 
 fun main(args: Array<String>) {
     val game = "cyberpunk"
@@ -150,16 +200,18 @@ fun main(args: Array<String>) {
 }
 ```
 # Collections
+
 ```
 fun main(args: Array<String>) {
 
     val numbers = listOf(5, -4, 7)
-    /*
-    примените методы filter, map к numbers
-    */
+    //
+    val filteredNumbers = numbers.filter { it > 0 }
+    val squaredNumbers = numbers.map { it * it }
+    //
     
     assert(filteredNumbers == listOf(5, 7))
-    assert(squaredNumbers == listOf(25, 16, 49))
+	assert(squaredNumbers == listOf(25, 16, 49))
     
     println("You are the best!")
 }
@@ -169,9 +221,9 @@ fun main(args: Array<String>) {
 fun main(args: Array<String>) {
     
     val list = listOf("kotlin", "java", "c++")
-    /*
-    найдите минимальный объект по первому символу, используя minBy
-    */
+    
+    val minValue = list.minBy { it.first() }
+    
     assert(minValue == "c++")
     
     println("You are the best!")
@@ -182,9 +234,8 @@ fun main(args: Array<String>) {
 fun main(args: Array<String>) {
     
     val list = listOf("kotlin", "java", "R")
-    /*
-    отсортируйте с помощью sortedBy
-    */
+    
+    val sortedList = list.sortedBy { it.length }
     
     assert(sortedList == listOf("R", "java", "kotlin"))
     
@@ -195,21 +246,23 @@ fun main(args: Array<String>) {
 ```
 fun main(args: Array<String>) {
     
-    val numbers = listOf(1, 3, -4, 2, -11)  
-	val (positive, negative) = // разделите лист на два. Первый содержит положительные, а второй отрицательные
+    val numbers = listOf(1, 3, -4, 2, -11)
+	val (positive, negative) = numbers.partition { it > 0 }
     
-    assert(positive == listOf(1, 3, 2))  
-	assert(negative == listOf(-4, -11))  
+    assert(positive == listOf(1, 3, 2))
+	assert(negative == listOf(-4, -11))
     
-    println("You are the best!")  
+    println("You are the best!")
 }
 ```
 # Constants
 ```
 class God() {
-/*
-добавьте статическое поле к классу
-*/
+//
+	companion object {
+		const val STATIC = "STATIC"
+	}
+//
 }
 
 fun main(){
@@ -231,13 +284,20 @@ class Wood : BaseBuildingMaterial() {
 class Brick : BaseBuildingMaterial() {
     override val numberNeeded = 8
 }
-/*
-напишите класс Building c параметром buildingMaterial, который принимает значения wood и brick. Класс также содержит поле actualMaterialsNeeded, которое возвращает произведение buildingMaterial.numberNeeded на 100.
-*/
+//
+class Building<T: BaseBuildingMaterial>(val buildingMaterial: T) {
 
-/*
-напишите функцию, которая принимает класс Building и возвращает true, если actualMaterialsNeeded < 500
-*/
+    val baseMaterialsNeeded = 100
+    val actualMaterialsNeeded = buildingMaterial.numberNeeded * baseMaterialsNeeded
+}
+//
+
+//
+fun <T : BaseBuildingMaterial> isSmallBuilding(building: Building<T>): Boolean {
+    if (building.actualMaterialsNeeded < 500) return true
+    else return false
+}
+//
 
 fun main(){
     val woodBuilding = Building(Wood())
@@ -256,14 +316,22 @@ fun main(){
 ```
 # High-order functions
 ```
-/*
-напишите расширение к списку Int, которое возвращает список элементов, которые при приминении функции, которую передают в качестве параметра, дают ноль 
-*/
+//
+fun List<Int>.divisibleBy(block: (Int) -> Int): List<Int> {
+    val result = mutableListOf<Int>()
+    for (item in this) {
+        if (block(item) == 0) {
+            result.add(item)
+        }
+    }
+    return result
+}
+//
 
 fun main(args: Array<String>) {
     val numbers = listOf<Int>(1, 2, 3, 4, 5, 6, 7, 8, 9, 0)
     
-    val answer = numbers.divisibleBy { it.rem(3) } // можно вызвать и так: numbers.divisibleBy({ it.rem(3) })
+    val answer = numbers.divisibleBy { it.rem(3) }
     
     assert(answer == listOf(3,6,9,0))
     
@@ -273,10 +341,10 @@ fun main(args: Array<String>) {
 # Extension function literals
 ```
 fun main(args: Array<String>) {
-    
-    val isEven: //TODO()  
-    val isOdd: //TODO()  
-    
+    //
+    val isEven: Int.() -> Boolean = { TODO() }
+    val isOdd: Int.() -> Boolean = { TODO() }
+    //
     assert(42.isEven() == true)
     assert(41.isOdd() == true)
     
@@ -286,7 +354,7 @@ fun main(args: Array<String>) {
 
 # Function apply
 ```
-fun <T> T.myApply(f: T.() -> Unit): T { // допишите, чтобы работало :) }
+fun <T> T.myApply(f: T.() -> Unit): T { f(); return this }
 
 fun main(args: Array<String>) {
     
